@@ -1,0 +1,388 @@
+/* ─────────────────────────────────────────────────────
+   Global Styles — Ahmed Jahin Dental CAD Portfolio
+   ───────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
+
+/* ── Reset & Base ─────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #0a1628;
+  color: #f5f0e8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Grain overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.35;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #0a1628; }
+::-webkit-scrollbar-thumb { background: #c9a84c; border-radius: 3px; }
+
+/* ── Typography ───────────────────────────────────── */
+.font-display {
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* ── Keyframe Animations ──────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-12px); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+@keyframes rotateSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes barGrow {
+  from { width: 0; }
+  to   { width: var(--target-width); }
+}
+
+/* ── Utility Animation Classes ────────────────────── */
+.fade-up  { animation: fadeUp 0.7s ease both; }
+.fade-in  { animation: fadeIn 0.8s ease both; }
+.float-anim { animation: float 5s ease-in-out infinite; }
+
+/* ── Gold Shimmer Text ────────────────────────────── */
+.gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    #c9a84c 0%,
+    #f0d78a 40%,
+    #c9a84c 60%,
+    #e8c96a 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Glass Card ───────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(201, 168, 76, 0.15);
+}
+
+/* ── Section Divider ──────────────────────────────── */
+.section-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #c9a84c, transparent);
+  margin: 12px 0 28px 0;
+}
+
+.section-divider--center {
+  margin: 12px auto 28px;
+}
+
+/* ── Navbar Link ──────────────────────────────────── */
+.nav-link {
+  position: relative;
+  transition: color 0.3s;
+  color: #d0d8e8;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #c9a84c;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.nav-link:hover::after { transform: scaleX(1); }
+.nav-link:hover        { color: #c9a84c; }
+
+/* ── Buttons ──────────────────────────────────────── */
+.btn-gold {
+  background: linear-gradient(135deg, #c9a84c, #e8c96a);
+  color: #0a1628;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: transform 0.2s, box-shadow 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(201, 168, 76, 0.35);
+}
+
+.btn-outline {
+  border: 1px solid #c9a84c;
+  color: #c9a84c;
+  font-family: 'DM Sans', sans-serif;
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  background: transparent;
+  cursor: pointer;
+}
+
+.btn-outline:hover {
+  background: rgba(201, 168, 76, 0.12);
+  transform: translateY(-2px);
+}
+
+/* ── Skill Bar ────────────────────────────────────── */
+.skill-bar-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #c9a84c, #e8c96a);
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+/* ── Timeline ─────────────────────────────────────── */
+.timeline-dot {
+  width: 14px;
+  height: 14px;
+  background: #c9a84c;
+  border-radius: 50%;
+  border: 3px solid #0a1628;
+  box-shadow: 0 0 0 2px #c9a84c;
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+
+/* ── Portfolio Card ───────────────────────────────── */
+.project-card {
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(201, 168, 76, 0.1);
+  cursor: pointer;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.45);
+}
+
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+.project-card:hover .project-img {
+  transform: scale(1.08);
+}
+
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 22, 40, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  padding: 24px;
+}
+
+.project-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+/* ── Tag Pill ─────────────────────────────────────── */
+.tag-pill {
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(201, 168, 76, 0.15);
+  color: #c9a84c;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+}
+
+/* ── Filter Button ────────────────────────────────── */
+.filter-btn {
+  padding: 7px 18px;
+  border-radius: 20px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.filter-btn--active {
+  background: linear-gradient(135deg, #c9a84c, #e8c96a);
+  color: #0a1628;
+  border: none;
+  font-weight: 600;
+}
+
+.filter-btn--inactive {
+  background: rgba(255, 255, 255, 0.04);
+  color: #8a9ab5;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  font-weight: 400;
+}
+
+.filter-btn--inactive:hover {
+  background: rgba(201, 168, 76, 0.08);
+  color: #c9a84c;
+}
+
+/* ── Form Inputs ──────────────────────────────────── */
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'DM Sans', sans-serif;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  color: #f5f0e8;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  border-color: #c9a84c;
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #4a6080;
+}
+
+.form-textarea {
+  resize: vertical;
+}
+
+/* ── Hero Decorative ──────────────────────────────── */
+.hero-ring {
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  border-radius: 50%;
+  position: absolute;
+  animation: rotateSlow 20s linear infinite;
+}
+
+/* ── Scroll-to-Top Button ─────────────────────────── */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 999;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c9a84c, #e8c96a);
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(201, 168, 76, 0.4);
+  color: #0a1628;
+  transition: transform 0.2s ease, opacity 0.3s ease;
+}
+
+.scroll-top-btn:hover {
+  transform: translateY(-3px);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+  .show-mobile { display: flex !important; }
+
+  .hero-content {
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+
+  .hero-photo {
+    order: -1;
+    width: 220px !important;
+    height: 270px !important;
+    margin: 0 auto;
+  }
+
+  .hero-buttons {
+    justify-content: center !important;
+  }
+
+  .hero-stats {
+    justify-content: center !important;
+  }
+
+  .about-grid {
+    flex-direction: column !important;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .timeline-card {
+    flex-direction: column !important;
+  }
+}
