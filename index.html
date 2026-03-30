@@ -1,15 +1,414 @@
 <!DOCTYPE html>
-<html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Ahmed Jahin — Dental CAD Designer & Exocad Specialist. Portfolio für digitale Zahntechnik, Kronen, Brücken, Veneers und Implantatversorgungen." />
-    <meta name="theme-color" content="#0a1628" />
-    <title>Ahmed Jahin · Dental CAD Designer</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beyond Van Gogh Invitation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #e8b84b;
+    --deep-blue: #0a1628;
+    --cobalt: #1a3a6e;
+    --teal: #2e7d6e;
+    --wheat: #f5dfa0;
+    --cream: #fef9ed;
+    --swirl1: #1b4fa8;
+    --swirl2: #e8b84b;
+    --swirl3: #2e7d6e;
+  }
+
+  html, body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: var(--deep-blue);
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    position: relative;
+  }
+
+  /* Animated swirling background */
+  .bg-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .swirl {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.25;
+    animation: drift linear infinite;
+  }
+
+  .swirl:nth-child(1) { width: 600px; height: 600px; background: var(--swirl1); top: -10%; left: -10%; animation-duration: 18s; animation-delay: 0s; }
+  .swirl:nth-child(2) { width: 400px; height: 400px; background: var(--gold); top: 40%; right: -5%; animation-duration: 22s; animation-delay: -5s; }
+  .swirl:nth-child(3) { width: 500px; height: 500px; background: var(--swirl3); bottom: -10%; left: 20%; animation-duration: 26s; animation-delay: -10s; }
+  .swirl:nth-child(4) { width: 300px; height: 300px; background: var(--swirl1); top: 10%; right: 30%; animation-duration: 20s; animation-delay: -3s; }
+  .swirl:nth-child(5) { width: 350px; height: 350px; background: #c47a2e; bottom: 20%; right: 10%; animation-duration: 24s; animation-delay: -8s; }
+
+  @keyframes drift {
+    0%   { transform: translate(0, 0) rotate(0deg) scale(1); }
+    25%  { transform: translate(40px, -30px) rotate(90deg) scale(1.1); }
+    50%  { transform: translate(-20px, 50px) rotate(180deg) scale(0.95); }
+    75%  { transform: translate(-50px, -20px) rotate(270deg) scale(1.05); }
+    100% { transform: translate(0, 0) rotate(360deg) scale(1); }
+  }
+
+  /* Starry dots */
+  .stars {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .star {
+    position: absolute;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: twinkle ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.5); }
+  }
+
+  /* Card */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: rgba(10, 22, 40, 0.72);
+    border: 1px solid rgba(232, 184, 75, 0.35);
+    border-radius: 24px;
+    padding: 56px 64px 52px;
+    max-width: 560px;
+    width: 92vw;
+    text-align: center;
+    backdrop-filter: blur(18px);
+    box-shadow:
+      0 0 0 1px rgba(232,184,75,0.1),
+      0 30px 80px rgba(0,0,0,0.6),
+      inset 0 1px 0 rgba(255,255,255,0.07);
+    animation: fadeUp 1s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 0.85rem;
+    letter-spacing: 0.22em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    opacity: 0.85;
+  }
+
+  .swirl-icon {
+    display: block;
+    margin: 0 auto 20px;
+    width: 52px;
+    height: 52px;
+    animation: spinSlow 8s linear infinite;
+  }
+
+  @keyframes spinSlow {
+    to { transform: rotate(360deg); }
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    color: var(--cream);
+    line-height: 1.25;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  h1 span {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    color: rgba(245, 223, 160, 0.65);
+    letter-spacing: 0.04em;
+    margin-bottom: 44px;
+    font-style: italic;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    margin: 0 auto 44px;
+  }
+
+  /* Buttons */
+  .btn-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    border: none;
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    border-radius: 100px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.12);
+    opacity: 0;
+    transition: opacity 0.2s;
+    border-radius: inherit;
+  }
+
+  .btn:hover::after { opacity: 1; }
+  .btn:active { transform: scale(0.97) !important; }
+
+  /* YES button */
+  .btn-yes {
+    background: linear-gradient(135deg, #e8b84b, #c47a2e);
+    color: var(--deep-blue);
+    font-size: 1.1rem;
+    padding: 16px 44px;
+    box-shadow: 0 4px 24px rgba(232,184,75,0.4);
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1),
+                font-size 0.4s cubic-bezier(0.34,1.56,0.64,1),
+                padding 0.4s cubic-bezier(0.34,1.56,0.64,1),
+                box-shadow 0.3s ease;
+  }
+
+  .btn-yes:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 36px rgba(232,184,75,0.6);
+  }
+
+  /* NO button */
+  .btn-no {
+    background: transparent;
+    color: rgba(245,223,160,0.55);
+    border: 1px solid rgba(245,223,160,0.25);
+    font-size: 0.9rem;
+    padding: 14px 30px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-no:hover {
+    background: rgba(245,223,160,0.07);
+    color: rgba(245,223,160,0.75);
+  }
+
+  /* Success state */
+  .message {
+    margin-top: 36px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--gold);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    min-height: 1.5em;
+  }
+
+  .message.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Confetti burst */
+  .confetti-piece {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    pointer-events: none;
+    z-index: 999;
+    border-radius: 2px;
+    animation: confettiFall 1.2s ease forwards;
+  }
+
+  @keyframes confettiFall {
+    0%   { opacity: 1; transform: translate(0,0) rotate(0deg); }
+    100% { opacity: 0; transform: translate(var(--tx), var(--ty)) rotate(var(--rot)); }
+  }
+
+  /* No button shrink/hide after multiple clicks */
+  .btn-no.tiny {
+    pointer-events: none;
+    opacity: 0 !important;
+    width: 0;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-canvas">
+  <div class="swirl"></div>
+  <div class="swirl"></div>
+  <div class="swirl"></div>
+  <div class="swirl"></div>
+  <div class="swirl"></div>
+</div>
+
+<div class="stars" id="stars"></div>
+
+<div class="card">
+  <!-- Van Gogh swirl SVG icon -->
+  <svg class="swirl-icon" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="26" cy="26" r="24" stroke="#e8b84b" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <path d="M26 10 C34 10, 42 18, 42 26 C42 34, 34 42, 26 42 C18 42, 10 34, 10 26 C10 20, 15 14, 22 13" stroke="#e8b84b" stroke-width="2" stroke-linecap="round" fill="none"/>
+    <path d="M22 13 C24 12.5, 25 18, 22 20 C19 22, 16 20, 18 17" stroke="#c47a2e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <circle cx="26" cy="26" r="3" fill="#e8b84b" opacity="0.8"/>
+  </svg>
+
+  <p class="eyebrow">✦ a special invitation ✦</p>
+
+  <h1>Would you go to<br><span>Beyond Van Gogh</span><br>with me?</h1>
+
+  <p class="subtitle">An immersive experience through the swirling world of art</p>
+
+  <div class="divider"></div>
+
+  <div class="btn-group">
+    <button class="btn btn-yes" id="btnYes" onclick="sayYes()">Yes! 🌻</button>
+    <button class="btn btn-no" id="btnNo" onclick="sayNo()">No</button>
+  </div>
+
+  <p class="message" id="message"></p>
+</div>
+
+<script>
+  // Generate stars
+  const starsEl = document.getElementById('stars');
+  for (let i = 0; i < 60; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 3 + 1;
+    s.style.cssText = `
+      width: ${size}px; height: ${size}px;
+      top: ${Math.random() * 100}%;
+      left: ${Math.random() * 100}%;
+      animation-duration: ${2 + Math.random() * 4}s;
+      animation-delay: ${-Math.random() * 4}s;
+    `;
+    starsEl.appendChild(s);
+  }
+
+  const btnYes = document.getElementById('btnYes');
+  const btnNo  = document.getElementById('btnNo');
+  const msg    = document.getElementById('message');
+
+  let noCount = 0;
+  let yesScale = 1;
+
+  const noMessages = [
+    "Are you sure? 😢",
+    "Think again... 🌟",
+    "Really?? 😭",
+    "Last chance! ✨",
+    "Pleeease? 🥺",
+    "Van Gogh would be sad... 🎨",
+  ];
+
+  function sayNo() {
+    noCount++;
+    yesScale += 0.18;
+
+    // Grow the YES button
+    btnYes.style.fontSize = (1.1 + noCount * 0.16) + 'rem';
+    btnYes.style.padding  = `${16 + noCount * 5}px ${44 + noCount * 14}px`;
+    btnYes.style.boxShadow = `0 ${4 + noCount * 4}px ${24 + noCount * 12}px rgba(232,184,75,${0.4 + noCount * 0.06})`;
+
+    // Shrink NO button
+    btnNo.style.fontSize  = Math.max(0.5, 0.9 - noCount * 0.12) + 'rem';
+    btnNo.style.padding   = `${Math.max(4, 14 - noCount * 2)}px ${Math.max(8, 30 - noCount * 4)}px`;
+    btnNo.style.opacity   = Math.max(0.1, 1 - noCount * 0.18);
+
+    // After enough clicks, hide NO entirely
+    if (noCount >= 6) {
+      btnNo.classList.add('tiny');
+    }
+
+    msg.classList.remove('show');
+    const noMsg = noMessages[Math.min(noCount - 1, noMessages.length - 1)];
+    setTimeout(() => {
+      msg.textContent = noMsg;
+      msg.style.color = 'rgba(245,223,160,0.7)';
+      msg.classList.add('show');
+    }, 50);
+  }
+
+  function sayYes() {
+    msg.classList.remove('show');
+    btnYes.disabled = true;
+    btnNo.disabled  = true;
+
+    // Confetti burst
+    const colors = ['#e8b84b','#2e7d6e','#c47a2e','#f5dfa0','#1a3a6e','#fff'];
+    const rect = btnYes.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top  + rect.height / 2;
+
+    for (let i = 0; i < 36; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti-piece';
+      const angle = (i / 36) * 360;
+      const dist  = 80 + Math.random() * 140;
+      const rad   = angle * Math.PI / 180;
+      c.style.cssText = `
+        left: ${cx}px; top: ${cy}px;
+        background: ${colors[i % colors.length]};
+        --tx: ${Math.cos(rad) * dist}px;
+        --ty: ${Math.sin(rad) * dist}px;
+        --rot: ${Math.random() * 720 - 360}deg;
+        animation-duration: ${0.8 + Math.random() * 0.6}s;
+        animation-delay: ${Math.random() * 0.2}s;
+      `;
+      document.body.appendChild(c);
+      c.addEventListener('animationend', () => c.remove());
+    }
+
+    setTimeout(() => {
+      msg.textContent = '🌻 Yay! It\'s a date — see you in Van Gogh\'s world! 🎨✨';
+      msg.style.color = '#e8b84b';
+      msg.classList.add('show');
+    }, 150);
+  }
+</script>
+</body>
 </html>
