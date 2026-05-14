@@ -1,249 +1,292 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TechNotes — Developer Blog</title>
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <!-- Common phishing signal: misleading title -->
+  <title>Secure Login — Verify Your Account Now</title>
+  <!-- Common signal: favicon from known brand CDN -->
+  <link rel="icon" href="https://www.google.com/favicon.ico"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    :root {
-      --bg: #f5f0e8;
-      --ink: #1a1208;
-      --muted: #6b5e45;
-      --accent: #c94a1a;
-      --border: #d4c9b0;
-      --card: #fffdf7;
-    }
-
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'Lora', Georgia, serif;
-      line-height: 1.7;
+      font-family: 'Roboto', sans-serif;
+      background: #f1f3f4;
       min-height: 100vh;
-    }
-
-    /* Grain overlay */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.5;
-    }
-
-    header {
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem 2rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
-      position: relative;
-      z-index: 1;
+      justify-content: center;
+      padding: 1rem;
     }
 
-    .logo {
-      font-family: 'DM Mono', monospace;
-      font-weight: 500;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
-      color: var(--ink);
-      text-decoration: none;
-    }
-
-    .logo span { color: var(--accent); }
-
-    nav a {
-      font-family: 'DM Mono', monospace;
+    /* ── SECURITY TEST BANNER ── */
+    .test-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #ff6b00;
+      color: #fff;
+      text-align: center;
+      padding: 0.5rem 1rem;
       font-size: 0.8rem;
-      color: var(--muted);
-      text-decoration: none;
-      margin-left: 2rem;
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      transition: color 0.2s;
+      z-index: 9999;
     }
 
-    nav a:hover { color: var(--accent); }
-
-    .hero {
-      position: relative;
-      z-index: 1;
-      max-width: 760px;
-      margin: 5rem auto 3rem;
-      padding: 0 2rem;
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem 2rem;
+      margin-top: 2.5rem;
     }
 
-    .hero-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1rem;
-    }
-
-    .hero h1 {
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      line-height: 1.15;
-      font-weight: 600;
-      letter-spacing: -0.02em;
+    .brand {
+      text-align: center;
       margin-bottom: 1.5rem;
     }
 
-    .hero h1 em {
-      font-style: italic;
-      color: var(--muted);
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--muted);
-      max-width: 520px;
-    }
-
-    .posts {
-      position: relative;
-      z-index: 1;
-      max-width: 760px;
-      margin: 3rem auto;
-      padding: 0 2rem;
-    }
-
-    .section-title {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding-top: 2rem;
-      margin-bottom: 2rem;
-    }
-
-    .post-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-    }
-
-    .post-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.06);
-    }
-
-    .post-meta {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
+    .brand-logo {
+      width: 48px;
+      height: 48px;
+      background: #1a73e8;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 0.75rem;
     }
 
-    .post-card h2 {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      line-height: 1.3;
+    .brand-logo svg { fill: #fff; }
+
+    .brand h1 {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #202124;
     }
 
-    .post-card p {
-      color: var(--muted);
-      font-size: 0.95rem;
+    /* Classic phishing signal: urgency warning */
+    .urgency-box {
+      background: #fce8e6;
+      border-left: 4px solid #d93025;
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      color: #c5221f;
+      line-height: 1.5;
     }
 
-    .tag {
-      display: inline-block;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      padding: 0.15rem 0.5rem;
-      margin-top: 1rem;
-      letter-spacing: 0.05em;
-      color: var(--muted);
+    .urgency-box strong { display: block; margin-bottom: 0.25rem; }
+
+    label {
+      display: block;
+      font-size: 0.875rem;
+      color: #3c4043;
+      margin-bottom: 0.35rem;
+      font-weight: 500;
     }
 
-    footer {
-      position: relative;
-      z-index: 1;
-      border-top: 1px solid var(--border);
-      padding: 2rem;
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.65rem 0.9rem;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      font-size: 1rem;
+      color: #202124;
+      margin-bottom: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus { border-color: #1a73e8; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.75rem;
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover { background: #1557b0; }
+
+    .form-footer {
       text-align: center;
-      font-family: 'DM Mono', monospace;
+      margin-top: 1.25rem;
+      font-size: 0.8rem;
+      color: #80868b;
+    }
+
+    .form-footer a { color: #1a73e8; text-decoration: none; }
+
+    /* Classic signal: padlock / "secured" claim */
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 1.5rem;
       font-size: 0.75rem;
-      color: var(--muted);
-      margin-top: 4rem;
+      color: #188038;
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .secure-badge svg { width: 14px; height: 14px; fill: #188038; }
+
+    /* Fake copyright footer — signal: impersonating brand */
+    .page-footer {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: #80868b;
+      text-align: center;
     }
 
-    .hero { animation: fadeUp 0.6s ease both; }
-    .post-card:nth-child(1) { animation: fadeUp 0.6s 0.1s ease both; }
-    .post-card:nth-child(2) { animation: fadeUp 0.6s 0.2s ease both; }
-    .post-card:nth-child(3) { animation: fadeUp 0.6s 0.3s ease both; }
+    .page-footer a { color: #1a73e8; text-decoration: none; margin: 0 0.5rem; }
+
+    /* Modal overlay shown on submit */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-overlay.show { display: flex; }
+
+    .modal {
+      background: #fff;
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 360px;
+      width: 90%;
+      text-align: center;
+    }
+
+    .modal h2 { font-size: 1.2rem; color: #202124; margin-bottom: 0.75rem; }
+    .modal p  { font-size: 0.9rem; color: #5f6368; line-height: 1.5; }
+
+    .modal-badge {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.5rem;
+      background: #1a73e8;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
 
-  <header>
-    <a class="logo" href="#">Tech<span>.</span>Notes</a>
-    <nav>
-      <a href="#">Articles</a>
-      <a href="#">Projects</a>
-      <a href="#">About</a>
-    </nav>
-  </header>
 
-  <section class="hero">
-    <div class="hero-label">Independent Dev Blog</div>
-    <h1>Writing about code,<br/><em>craft, and curiosity.</em></h1>
-    <p>A place for technical deep-dives, project logs, and opinions on software development from a working developer.</p>
-  </section>
+  <div class="card">
+    <div class="brand">
+      <div class="brand-logo">
+        <!-- Mimics Google-style "G" logo -->
+        <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 11h8.533C20.84 13.895 19.04 18 12 18c-3.315 0-6-2.685-6-6s2.685-6 6-6c1.664 0 3.166.676 4.254 1.772l2.118-2.119C16.714 4.02 14.486 3 12 3 6.477 3 2 7.477 2 13s4.477 10 10 10c8 0 10-6.93 10-10 0-.663-.069-1.31-.2-1.937L12 11z"/></svg>
+      </div>
+      <!-- Signal: vague brand name pretending to be Google -->
+      <h1>Google Accounts</h1>
+    </div>
 
-  <section class="posts">
-    <div class="section-title">Recent Articles</div>
+    <!-- ──────────── PHISHING SIGNALS ──────────── -->
 
-    <article class="post-card">
-      <div class="post-meta">May 12, 2026 &nbsp;·&nbsp; 8 min read</div>
-      <h2>Why I Stopped Using ORMs for Complex Queries</h2>
-      <p>After years of Sequelize and Prisma, I went back to raw SQL for reporting — here's what I learned about where abstraction helps and where it doesn't.</p>
-      <span class="tag">databases</span>
-      <span class="tag">postgres</span>
-    </article>
+    <!-- Signal 1: Urgency / fear -->
+    <div class="urgency-box">
+      <strong>⚠️ Unusual activity detected</strong>
+      Your account has been flagged for suspicious sign-in attempts.
+      Verify your identity within <strong id="countdown">09:59</strong> to avoid suspension.
+    </div>
 
-    <article class="post-card">
-      <div class="post-meta">Apr 28, 2026 &nbsp;·&nbsp; 5 min read</div>
-      <h2>Building a Personal DNS Blocklist with Pi-hole</h2>
-      <p>A weekend project that turned into a permanent home network upgrade. Setup guide, custom blocklists, and lessons from running it for 6 months.</p>
-      <span class="tag">networking</span>
-      <span class="tag">self-hosted</span>
-    </article>
+    <!-- Signal 2: Credential harvesting form (disabled — no endpoint) -->
+    <form onsubmit="handleSubmit(event)">
+      <label for="email">Email or phone</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="off"/>
 
-    <article class="post-card">
-      <div class="post-meta">Apr 10, 2026 &nbsp;·&nbsp; 12 min read</div>
-      <h2>Understanding Browser Rendering: From Bytes to Pixels</h2>
-      <p>A walkthrough of what actually happens when a browser loads a page — the critical rendering path, layout thrashing, and how to measure what matters.</p>
-      <span class="tag">performance</span>
-      <span class="tag">browser</span>
-    </article>
-  </section>
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password"/>
 
-  <footer>
-    © 2026 TechNotes &nbsp;·&nbsp; Cairo, EG &nbsp;·&nbsp; Built with plain HTML
-  </footer>
+      <!-- Signal 3: Extra credential grab -->
+      <label for="recovery">Recovery phone / backup email</label>
+      <input type="text" id="recovery" name="recovery" placeholder="Recovery contact"/>
+
+      <button class="btn-submit" type="submit">Verify & Continue</button>
+    </form>
+
+    <!-- Signal 4: False security claim -->
+    <div class="secure-badge">
+      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+      256-bit SSL Secured · Your data is protected
+    </div>
+
+    <div class="form-footer">
+      <a href="#">Forgot password?</a> · <a href="#">Create account</a>
+    </div>
+  </div>
+
+  <!-- Signal 5: Fake brand footer -->
+  <div class="page-footer">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Help</a>
+    <br/>© 2026 Google LLC — All rights reserved
+  </div>
+
+  <!-- Submit modal: shows "intercepted" message instead of sending data -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-badge">🔬</div>
+      <h2>Test Interception</h2>
+      <p>In a real phishing attack, credentials entered here would be sent to an attacker's server.<br/><br/>
+         <strong>No data was collected or transmitted.</strong> This is a security tool test page only.</p>
+      <button class="modal-btn" onclick="document.getElementById('modalOverlay').classList.remove('show')">Close</button>
+    </div>
+  </div>
+
+  <script>
+    // Countdown timer — classic phishing urgency pattern
+    let secs = 9 * 60 + 59;
+    const el = document.getElementById('countdown');
+    const timer = setInterval(() => {
+      if (secs <= 0) { clearInterval(timer); el.textContent = '00:00'; return; }
+      secs--;
+      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const s = String(secs % 60).padStart(2, '0');
+      el.textContent = `${m}:${s}`;
+    }, 1000);
+
+    // Intercept form — no data is actually sent anywhere
+    function handleSubmit(e) {
+      e.preventDefault();
+      document.getElementById('modalOverlay').classList.add('show');
+      // Clear fields immediately
+      document.getElementById('email').value = '';
+      document.getElementById('password').value = '';
+      document.getElementById('recovery').value = '';
+    }
+  </script>
 
 </body>
 </html>
