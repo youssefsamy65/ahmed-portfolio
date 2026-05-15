@@ -3,17 +3,42 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <!-- Common phishing signal: misleading title -->
-  <title>Secure Login — Verify Your Account Now</title>
-  <!-- Common signal: favicon from known brand CDN -->
-  <link rel="icon" href="https://www.google.com/favicon.ico"/>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"/>
+
+  <!-- Signal: "Verify" + "Account" in title — normal for SaaS -->
+  <title>Verify Your Identity — VaultSync Account</title>
+
+  <!-- Signal: External favicon from trusted CDN — normal -->
+  <link rel="icon" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/svgs/solid/shield-halved.svg"/>
+
+  <!-- Signal: Referencing Google, Stripe, Cloudflare domains — normal 3rd party deps -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <!-- Signal: Meta refresh / redirect hint — used by real apps for session timeout -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate"/>
+  <meta name="referrer" content="no-referrer"/>
+  <meta name="robots" content="noindex, nofollow"/>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    :root {
+      --bg:       #0d1117;
+      --surface:  #161b22;
+      --border:   #30363d;
+      --text:     #e6edf3;
+      --muted:    #7d8590;
+      --accent:   #2ea043;
+      --accent2:  #1f6feb;
+      --danger:   #f85149;
+      --warn-bg:  #161b22;
+      --warn-bd:  #9e6a03;
+      --warn-txt: #d29922;
+    }
+
     body {
-      font-family: 'Roboto', sans-serif;
-      background: #f1f3f4;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
@@ -22,269 +47,435 @@
       padding: 1rem;
     }
 
-    /* ── SECURITY TEST BANNER ── */
-    .test-banner {
+    /* Top bar — mirrors GitHub, Stripe, etc. */
+    .topbar {
       position: fixed;
       top: 0; left: 0; right: 0;
-      background: #ff6b00;
-      color: #fff;
-      text-align: center;
-      padding: 0.5rem 1rem;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      z-index: 9999;
+      height: 48px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      gap: 0.6rem;
+      z-index: 10;
     }
 
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .topbar-logo .icon {
+      width: 22px; height: 22px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .topbar-logo .icon svg { fill: #fff; width: 13px; height: 13px; }
+
+    .topbar-right {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    /* Main card */
     .card {
-      background: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
       width: 100%;
-      max-width: 400px;
-      padding: 2.5rem 2rem;
-      margin-top: 2.5rem;
+      max-width: 420px;
+      padding: 2rem 2rem 1.75rem;
+      margin-top: 3rem;
+      animation: fadeUp 0.4s ease both;
     }
 
-    .brand {
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-header {
       text-align: center;
       margin-bottom: 1.5rem;
     }
 
-    .brand-logo {
-      width: 48px;
-      height: 48px;
-      background: #1a73e8;
-      border-radius: 50%;
+    .card-header .shield {
+      width: 44px; height: 44px;
+      background: linear-gradient(135deg, #1f6feb22, #2ea04322);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       margin-bottom: 0.75rem;
     }
 
-    .brand-logo svg { fill: #fff; }
+    .card-header .shield svg { fill: var(--accent); width: 22px; height: 22px; }
 
-    .brand h1 {
-      font-size: 1.5rem;
-      font-weight: 500;
-      color: #202124;
+    .card-header h1 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.35rem;
     }
 
-    /* Classic phishing signal: urgency warning */
-    .urgency-box {
-      background: #fce8e6;
-      border-left: 4px solid #d93025;
-      border-radius: 4px;
-      padding: 0.75rem 1rem;
-      margin-bottom: 1.5rem;
-      font-size: 0.875rem;
-      color: #c5221f;
+    .card-header p {
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* Signal: trial expiry warning — normal SaaS conversion copy */
+    .warn-box {
+      background: #2a1f00;
+      border: 1px solid var(--warn-bd);
+      border-radius: 6px;
+      padding: 0.7rem 0.9rem;
+      margin-bottom: 1.25rem;
+      font-size: 0.8rem;
+      color: var(--warn-txt);
+      display: flex;
+      gap: 0.6rem;
+      align-items: flex-start;
       line-height: 1.5;
     }
 
-    .urgency-box strong { display: block; margin-bottom: 0.25rem; }
+    .warn-box .warn-icon { flex-shrink: 0; margin-top: 1px; font-size: 0.9rem; }
+
+    .warn-box strong { display: block; margin-bottom: 0.2rem; font-size: 0.82rem; }
+
+    /* Signal: countdown — normal for trial/session expiry UX */
+    #session-timer {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+    }
+
+    /* Form fields */
+    .field { margin-bottom: 1rem; }
 
     label {
       display: block;
-      font-size: 0.875rem;
-      color: #3c4043;
-      margin-bottom: 0.35rem;
+      font-size: 0.78rem;
       font-weight: 500;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-family: 'IBM Plex Mono', monospace;
     }
 
-    input[type="text"],
     input[type="email"],
-    input[type="password"] {
+    input[type="password"],
+    input[type="text"] {
       width: 100%;
-      padding: 0.65rem 0.9rem;
-      border: 1px solid #dadce0;
-      border-radius: 4px;
-      font-size: 1rem;
-      color: #202124;
-      margin-bottom: 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.85rem;
+      font-size: 0.9rem;
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      /* Signal: autocomplete off — standard on password managers & secure forms */
+      autocomplete: off;
       outline: none;
-      transition: border-color 0.2s;
+      transition: border-color 0.15s;
     }
 
-    input:focus { border-color: #1a73e8; }
+    input:focus { border-color: var(--accent2); }
 
-    .btn-submit {
+    .field-hint {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* Signal: 2FA / recovery code — normal MFA flow */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1rem 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .btn {
       width: 100%;
-      padding: 0.75rem;
-      background: #1a73e8;
-      color: #fff;
+      padding: 0.65rem;
       border: none;
-      border-radius: 4px;
-      font-size: 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
       font-weight: 500;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: opacity 0.15s;
+      font-family: 'IBM Plex Sans', sans-serif;
     }
 
-    .btn-submit:hover { background: #1557b0; }
+    .btn:hover { opacity: 0.88; }
 
-    .form-footer {
-      text-align: center;
-      margin-top: 1.25rem;
-      font-size: 0.8rem;
-      color: #80868b;
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
     }
 
-    .form-footer a { color: #1a73e8; text-decoration: none; }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      margin-top: 0.5rem;
+    }
 
-    /* Classic signal: padlock / "secured" claim */
-    .secure-badge {
+    /* Signal: SSL / security badge — normal trust signal on login pages */
+    .trust-row {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem;
-      margin-top: 1.5rem;
-      font-size: 0.75rem;
-      color: #188038;
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
     }
 
-    .secure-badge svg { width: 14px; height: 14px; fill: #188038; }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      font-family: 'IBM Plex Mono', monospace;
+    }
 
-    /* Fake copyright footer — signal: impersonating brand */
-    .page-footer {
-      margin-top: 2rem;
-      font-size: 0.75rem;
-      color: #80868b;
+    .trust-item svg { width: 12px; height: 12px; fill: var(--accent); }
+
+    /* Bottom links — normal for any SaaS */
+    .card-footer {
+      margin-top: 1.25rem;
       text-align: center;
+      font-size: 0.75rem;
+      color: var(--muted);
     }
 
-    .page-footer a { color: #1a73e8; text-decoration: none; margin: 0 0.5rem; }
+    .card-footer a {
+      color: var(--accent2);
+      text-decoration: none;
+    }
 
-    /* Modal overlay shown on submit */
-    .modal-overlay {
+    /* Signal: legal / compliance footer — totally normal -->*/
+    .page-footer {
+      margin-top: 1.5rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .page-footer a { color: var(--muted); text-decoration: underline; margin: 0 0.3rem; }
+
+    /* Success state */
+    .success-overlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 1000;
+      background: var(--bg);
+      z-index: 100;
       align-items: center;
       justify-content: center;
-    }
-
-    .modal-overlay.show { display: flex; }
-
-    .modal {
-      background: #fff;
-      border-radius: 8px;
-      padding: 2rem;
-      max-width: 360px;
-      width: 90%;
+      flex-direction: column;
+      gap: 1rem;
       text-align: center;
+      padding: 2rem;
     }
 
-    .modal h2 { font-size: 1.2rem; color: #202124; margin-bottom: 0.75rem; }
-    .modal p  { font-size: 0.9rem; color: #5f6368; line-height: 1.5; }
+    .success-overlay.show { display: flex; animation: fadeUp 0.4s ease both; }
 
-    .modal-badge {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+    .success-overlay .big-icon {
+      font-size: 3rem;
     }
 
-    .modal-btn {
-      margin-top: 1.5rem;
-      padding: 0.6rem 1.5rem;
-      background: #1a73e8;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9rem;
+    .success-overlay h2 {
+      font-size: 1.3rem;
+      color: var(--accent);
+    }
+
+    .success-overlay p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      max-width: 340px;
+      line-height: 1.6;
+    }
+
+    .progress-bar {
+      width: 200px;
+      height: 3px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 2.5s linear;
     }
   </style>
 </head>
 <body>
 
+  <!-- Topbar — mirrors real SaaS headers -->
+  <div class="topbar">
+    <div class="topbar-logo">
+      <div class="icon">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+      </div>
+      VaultSync
+    </div>
+    <div class="topbar-right">secure.vaultsync.io</div>
+  </div>
 
   <div class="card">
-    <div class="brand">
-      <div class="brand-logo">
-        <!-- Mimics Google-style "G" logo -->
-        <svg viewBox="0 0 24 24" width="28" height="28"><path d="M12 11h8.533C20.84 13.895 19.04 18 12 18c-3.315 0-6-2.685-6-6s2.685-6 6-6c1.664 0 3.166.676 4.254 1.772l2.118-2.119C16.714 4.02 14.486 3 12 3 6.477 3 2 7.477 2 13s4.477 10 10 10c8 0 10-6.93 10-10 0-.663-.069-1.31-.2-1.937L12 11z"/></svg>
+    <div class="card-header">
+      <div class="shield">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
       </div>
-      <!-- Signal: vague brand name pretending to be Google -->
-      <h1>Google Accounts</h1>
+      <h1>Verify your identity</h1>
+      <p>Sign in to continue to your VaultSync account</p>
     </div>
 
-    <!-- ──────────── PHISHING SIGNALS ──────────── -->
-
-    <!-- Signal 1: Urgency / fear -->
-    <div class="urgency-box">
-      <strong>⚠️ Unusual activity detected</strong>
-      Your account has been flagged for suspicious sign-in attempts.
-      Verify your identity within <strong id="countdown">09:59</strong> to avoid suspension.
+    <!-- Signal: expiry warning with countdown — normal SaaS trial UX -->
+    <div class="warn-box">
+      <span class="warn-icon">⚠</span>
+      <div>
+        <strong>Trial expires in <span id="session-timer">11:59:42</span></strong>
+        Sign in now to retain access to your encrypted vault and prevent data loss.
+      </div>
     </div>
 
-    <!-- Signal 2: Credential harvesting form (disabled — no endpoint) -->
-    <form onsubmit="handleSubmit(event)">
-      <label for="email">Email or phone</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" autocomplete="off"/>
+    <!-- Signal: credential form with autocomplete off — normal for password manager -->
+    <form onsubmit="handleSubmit(event)" autocomplete="off">
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" placeholder="Enter your password"/>
+      <!-- Signal: hidden CSRF token — standard security practice on all real forms -->
+      <input type="hidden" name="_csrf" value="eyJhbGciOiJIUzI1NiJ9.dGVzdA.abc123"/>
+      <!-- Signal: hidden redirect param — normal post-login redirect -->
+      <input type="hidden" name="redirect_uri" value="https://app.vaultsync.io/dashboard"/>
+      <!-- Signal: hidden session fingerprint — standard fraud prevention -->
+      <input type="hidden" name="_fp" id="fp"/>
 
-      <!-- Signal 3: Extra credential grab -->
-      <label for="recovery">Recovery phone / backup email</label>
-      <input type="text" id="recovery" name="recovery" placeholder="Recovery contact"/>
+      <div class="field">
+        <label for="email">Work email</label>
+        <input type="email" id="email" name="email" placeholder="you@company.com" autocomplete="off" required/>
+      </div>
 
-      <button class="btn-submit" type="submit">Verify & Continue</button>
+      <div class="field">
+        <label for="password">Master password</label>
+        <!-- Signal: autocomplete="new-password" — recommended by NIST for password managers -->
+        <input type="password" id="password" name="password" placeholder="••••••••••••" autocomplete="new-password" required/>
+        <div class="field-hint">Never shared with VaultSync servers — zero-knowledge architecture.</div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Sign in securely →</button>
     </form>
 
-    <!-- Signal 4: False security claim -->
-    <div class="secure-badge">
-      <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
-      256-bit SSL Secured · Your data is protected
+    <div class="divider">or use recovery access</div>
+
+    <!-- Signal: recovery code field — standard MFA / account recovery UX -->
+    <form onsubmit="handleSubmit(event)" autocomplete="off">
+      <div class="field">
+        <label for="recovery">Recovery code</label>
+        <input type="text" id="recovery" name="recovery" placeholder="XXXX-XXXX-XXXX-XXXX" autocomplete="off"
+               style="font-family:'IBM Plex Mono',monospace; letter-spacing:0.08em;"/>
+        <div class="field-hint">16-character code from your emergency kit PDF.</div>
+      </div>
+      <button type="submit" class="btn btn-secondary">Use recovery code</button>
+    </form>
+
+    <!-- Signal: SSL / security badges — standard on Stripe, GitHub, etc. -->
+    <div class="trust-row">
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        TLS 1.3
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        Zero-knowledge
+      </div>
+      <div class="trust-item">
+        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+        SOC 2 Type II
+      </div>
     </div>
 
-    <div class="form-footer">
-      <a href="#">Forgot password?</a> · <a href="#">Create account</a>
+    <div class="card-footer">
+      <a href="#">Forgot master password?</a> &nbsp;·&nbsp; <a href="#">Contact support</a>
     </div>
   </div>
 
-  <!-- Signal 5: Fake brand footer -->
+  <!-- Signal: compliance footer — normal for B2B SaaS -->
   <div class="page-footer">
-    <a href="#">Privacy</a>
-    <a href="#">Terms</a>
-    <a href="#">Help</a>
-    <br/>© 2026 Google LLC — All rights reserved
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Security</a>
+    <a href="#">GDPR</a>
+    <br/>
+    © 2026 VaultSync Inc. · 340 Pine St, San Francisco, CA · SOC 2 Certified
+    <br/>
+    Protected by Cloudflare · Uptime monitored by Better Uptime
   </div>
 
-  <!-- Submit modal: shows "intercepted" message instead of sending data -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <div class="modal-badge">🔬</div>
-      <h2>Test Interception</h2>
-      <p>In a real phishing attack, credentials entered here would be sent to an attacker's server.<br/><br/>
-         <strong>No data was collected or transmitted.</strong> This is a security tool test page only.</p>
-      <button class="modal-btn" onclick="document.getElementById('modalOverlay').classList.remove('show')">Close</button>
-    </div>
+  <!-- Success / redirect simulation -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="big-icon">🔐</div>
+    <h2>Identity verified</h2>
+    <p>
+      <strong>This is a security tool test page.</strong><br/><br/>
+      No credentials were collected or transmitted.
+      In a real app, you'd be redirected to your dashboard now.
+    </p>
+    <div class="progress-bar"><div class="progress-bar-fill" id="progressFill"></div></div>
+    <p style="font-size:0.72rem;">Simulating redirect to app.vaultsync.io/dashboard…</p>
   </div>
 
   <script>
-    // Countdown timer — classic phishing urgency pattern
-    let secs = 9 * 60 + 59;
-    const el = document.getElementById('countdown');
-    const timer = setInterval(() => {
-      if (secs <= 0) { clearInterval(timer); el.textContent = '00:00'; return; }
+    // Fingerprint field — standard fraud prevention (ThreatMetrix, Sardine, etc.)
+    document.getElementById('fp').value = btoa(navigator.userAgent + screen.width + navigator.language).slice(0, 32);
+
+    // Countdown: trial expiry — 12 hour countdown, normal SaaS UX
+    let secs = 11 * 3600 + 59 * 60 + 42;
+    const timerEl = document.getElementById('session-timer');
+    setInterval(() => {
+      if (secs <= 0) return;
       secs--;
-      const m = String(Math.floor(secs / 60)).padStart(2, '0');
+      const h = String(Math.floor(secs / 3600)).padStart(2, '0');
+      const m = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
       const s = String(secs % 60).padStart(2, '0');
-      el.textContent = `${m}:${s}`;
+      timerEl.textContent = `${h}:${m}:${s}`;
     }, 1000);
 
-    // Intercept form — no data is actually sent anywhere
+    // Form intercept — nothing is sent
     function handleSubmit(e) {
       e.preventDefault();
-      document.getElementById('modalOverlay').classList.add('show');
-      // Clear fields immediately
-      document.getElementById('email').value = '';
-      document.getElementById('password').value = '';
-      document.getElementById('recovery').value = '';
+      const overlay = document.getElementById('successOverlay');
+      overlay.classList.add('show');
+      // Animate progress bar (simulates redirect delay)
+      setTimeout(() => {
+        document.getElementById('progressFill').style.width = '100%';
+      }, 100);
     }
   </script>
 
